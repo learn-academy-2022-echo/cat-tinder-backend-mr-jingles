@@ -5,6 +5,8 @@ class CatsController < ApplicationController
     end
   
     def create
+        cat = Cat.create(cat_params)
+        render json: cat
     end
   
     def update
@@ -12,4 +14,11 @@ class CatsController < ApplicationController
   
     def destroy
     end
+    
+    private
+      def cat_params
+        params.require(:cat).permit(:name, :age, :enjoys, :image)
+    end
+
+
 end
