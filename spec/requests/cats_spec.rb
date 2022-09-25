@@ -18,6 +18,7 @@ RSpec.describe "Cats", type: :request do
       expect(cat.length).to eq 1
     end
   end
+
   describe "POST /create" do
     it "creates a cat" do
       cat_params ={
@@ -44,6 +45,63 @@ RSpec.describe "Cats", type: :request do
       expect(json[:age]).to eq(7)
 
 
+    end
+  end
+  
+  describe 'PATCH /update' do 
+    it 'updates a cat' do 
+      cat_params ={
+        cat: {
+          name: 'rambo',
+          age: 7,
+          enjoys: 'ramboing out and taking in on the crooked cats that curropt the system of the legion of cats',
+          image: 'https://www.google.com/imgres?imgurl=https%3A%2F%2Fi.redd.it%2F0jojnmgddmi31.png&imgrefurl=https%3A%2F%2Fwww.reddit.com%2Fr%2FONeillism%2Fcomments%2Fcvafie%2Fsylvester_stallone_the_cat%2F&tbnid=rlaLozk7k7uOdM&vet=12ahUKEwir8oC7y6z6AhXKBFMKHZhfBF4QMygSegUIARDPAQ..i&docid=u9xfJbnYZZQ5tM&w=512&h=527&q=sylvester%20stallone%20cat&ved=2ahUKEwir8oC7y6z6AhXKBFMKHZhfBF4QMygSegUIARDPAQ'
+        }
+      }
+
+      post '/cats', params: cat_params
+
+      cat = Cat.first
+  
+      patch "/cats/#{cat.id}", params: {
+        cat: {
+          name: 'rambo',
+          age: 3,
+          enjoys: 'ramboing out and taking in on the crooked cats that curropt the system of the legion of cats',
+          image: 'https://www.google.com/imgres?imgurl=https%3A%2F%2Fi.redd.it%2F0jojnmgddmi31.png&imgrefurl=https%3A%2F%2Fwww.reddit.com%2Fr%2FONeillism%2Fcomments%2Fcvafie%2Fsylvester_stallone_the_cat%2F&tbnid=rlaLozk7k7uOdM&vet=12ahUKEwir8oC7y6z6AhXKBFMKHZhfBF4QMygSegUIARDPAQ..i&docid=u9xfJbnYZZQ5tM&w=512&h=527&q=sylvester%20stallone%20cat&ved=2ahUKEwir8oC7y6z6AhXKBFMKHZhfBF4QMygSegUIARDPAQ'
+        }
+      }
+  
+      expect(response).to have_http_status(200)
+      json = JSON.parse(response.body).deep_symbolize_keys
+
+      p json
+
+
+      expect(Cat.count).to eq(1)
+      expect(json[:age]).to eq(3)
+    end
+  end
+
+  describe 'DELETE /destroy' do 
+    it 'deletes a cat' do 
+      cat_params ={
+        cat: {
+          name: 'rambo',
+          age: 7,
+          enjoys: 'ramboing out and taking in on the crooked cats that curropt the system of the legion of cats',
+          image: 'https://www.google.com/imgres?imgurl=https%3A%2F%2Fi.redd.it%2F0jojnmgddmi31.png&imgrefurl=https%3A%2F%2Fwww.reddit.com%2Fr%2FONeillism%2Fcomments%2Fcvafie%2Fsylvester_stallone_the_cat%2F&tbnid=rlaLozk7k7uOdM&vet=12ahUKEwir8oC7y6z6AhXKBFMKHZhfBF4QMygSegUIARDPAQ..i&docid=u9xfJbnYZZQ5tM&w=512&h=527&q=sylvester%20stallone%20cat&ved=2ahUKEwir8oC7y6z6AhXKBFMKHZhfBF4QMygSegUIARDPAQ'
+        }
+      }
+
+      post '/cats', params: cat_params
+      expect(response.status).to eq(200)
+
+      cat = Cat.first
+      delete "/cats/#{cat.id}"
+      expect(response.status).to eq(204)
+      cats = Cat.all
+      expect(cats).to be_empty
     end
   end
 end
