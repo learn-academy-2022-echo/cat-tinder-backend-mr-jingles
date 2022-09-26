@@ -46,7 +46,98 @@ RSpec.describe "Cats", type: :request do
 
 
     end
+
+    it 'cannot create a cat without a cat name' do
+      cat_params = {
+        cat: {
+          age: 7,
+          enjoys: 'ramboing out and taking in on the crooked cats that curropt the system of the legion of cats',
+          image: 'https://www.google.com/imgres?imgurl=https%3A%2F%2Fi.redd.it%2F0jojnmgddmi31.png&imgrefurl=https%3A%2F%2Fwww.reddit.com%2Fr%2FONeillism%2Fcomments%2Fcvafie%2Fsylvester_stallone_the_cat%2F&tbnid=rlaLozk7k7uOdM&vet=12ahUKEwir8oC7y6z6AhXKBFMKHZhfBF4QMygSegUIARDPAQ..i&docid=u9xfJbnYZZQ5tM&w=512&h=527&q=sylvester%20stallone%20cat&ved=2ahUKEwir8oC7y6z6AhXKBFMKHZhfBF4QMygSegUIARDPAQ'
+        }
+      }
+    
+      post '/cats', params: cat_params
+    
+      expect(response.status).to eq(422)
+    
+      json = JSON.parse(response.body)
+      p json
+    expect(json['name']).to include "can't be blank"
   end
+
+  it 'cannot create a cat without a cat age' do
+    cat_params = {
+      cat: {
+        name: 'Rambo',
+        enjoys: 'ramboing out and taking in on the crooked cats that curropt the system of the legion of cats',
+        image: 'https://www.google.com/imgres?imgurl=https%3A%2F%2Fi.redd.it%2F0jojnmgddmi31.png&imgrefurl=https%3A%2F%2Fwww.reddit.com%2Fr%2FONeillism%2Fcomments%2Fcvafie%2Fsylvester_stallone_the_cat%2F&tbnid=rlaLozk7k7uOdM&vet=12ahUKEwir8oC7y6z6AhXKBFMKHZhfBF4QMygSegUIARDPAQ..i&docid=u9xfJbnYZZQ5tM&w=512&h=527&q=sylvester%20stallone%20cat&ved=2ahUKEwir8oC7y6z6AhXKBFMKHZhfBF4QMygSegUIARDPAQ'
+      }
+    }
+  
+    post '/cats', params: cat_params
+  
+    expect(response.status).to eq(422)
+  
+    json = JSON.parse(response.body)
+    p json
+    expect(json['age']).to include "can't be blank"
+  end
+
+  it 'cannot create a cat without a cat enjoys' do
+    cat_params = {
+      cat: {
+        name: 'Rambo',
+        age: 7,
+        image: 'https://www.google.com/imgres?imgurl=https%3A%2F%2Fi.redd.it%2F0jojnmgddmi31.png&imgrefurl=https%3A%2F%2Fwww.reddit.com%2Fr%2FONeillism%2Fcomments%2Fcvafie%2Fsylvester_stallone_the_cat%2F&tbnid=rlaLozk7k7uOdM&vet=12ahUKEwir8oC7y6z6AhXKBFMKHZhfBF4QMygSegUIARDPAQ..i&docid=u9xfJbnYZZQ5tM&w=512&h=527&q=sylvester%20stallone%20cat&ved=2ahUKEwir8oC7y6z6AhXKBFMKHZhfBF4QMygSegUIARDPAQ'
+      }
+    }
+  
+    post '/cats', params: cat_params
+  
+    expect(response.status).to eq(422)
+  
+    json = JSON.parse(response.body)
+    p json
+    expect(json['enjoys']).to include "can't be blank"
+  end
+
+  it 'cannot create a cat without a cat image' do
+    cat_params = {
+      cat: {
+        name: 'Rambo',
+        age: 7,
+        enjoys: 'ramboing out and taking in on the crooked cats that curropt the system of the legion of cats'
+      }
+    }
+  
+    post '/cats', params: cat_params
+  
+    expect(response.status).to eq(422)
+  
+    json = JSON.parse(response.body)
+    p json
+    expect(json['image']).to include "can't be blank"
+  end
+
+  it 'cannot create unless cat enjoys is minimum 10 characters' do
+    cat_params = {
+      cat: {
+        name: 'Rambo',
+        age: 7,
+        enjoys: 'a cat',
+        image: 'https://www.google.com/imgres?imgurl=https%3A%2F%2Fi.redd.it%2F0jojnmgddmi31.png&imgrefurl=https%3A%2F%2Fwww.reddit.com%2Fr%2FONeillism%2Fcomments%2Fcvafie%2Fsylvester_stallone_the_cat%2F&tbnid=rlaLozk7k7uOdM&vet=12ahUKEwir8oC7y6z6AhXKBFMKHZhfBF4QMygSegUIARDPAQ..i&docid=u9xfJbnYZZQ5tM&w=512&h=527&q=sylvester%20stallone%20cat&ved=2ahUKEwir8oC7y6z6AhXKBFMKHZhfBF4QMygSegUIARDPAQ'
+      }
+    }
+  
+    post '/cats', params: cat_params
+  
+    expect(response.status).to eq(422)
+  
+    json = JSON.parse(response.body)
+    p json
+    expect(json['enjoys']).to include "is too short (minimum is 10 characters)"
+  end
+end
   
   describe 'PATCH /update' do 
     it 'updates a cat' do 
@@ -103,8 +194,9 @@ RSpec.describe "Cats", type: :request do
       cats = Cat.all
       expect(cats).to be_empty
     end
-  end
+  end 
 end
+
 
 
 
