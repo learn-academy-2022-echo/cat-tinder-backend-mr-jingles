@@ -22,3 +22,8 @@ it 'should validate emjoys' do
     expect(cat.errors[:enjoys]).to_not be_empty
    end
 end
+
+
+
+
+
