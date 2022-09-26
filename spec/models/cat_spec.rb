@@ -9,7 +9,7 @@ RSpec.describe Cat, type: :model do
     cat = Cat.create
     expect(cat.errors[:age]).to_not be_empty
    end
-it 'should validate emjoys' do
+it 'should validate enjoys' do
     cat = Cat.create
     expect(cat.errors[:enjoys]).to_not be_empty
    end
